@@ -1,72 +1,88 @@
-set nocompatible              " 去除VI一致性,必须
-filetype off                  " 必须
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-" 设置包括vundle和初始化相关的runtime path
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" 另一种选择, 指定一个vundle安装插件的路径
+" alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-" 让vundle管理插件版本,必须
+" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-"自己的一些插件
-Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/nerdtree'
 
-" 以下范例用来支持不同格式的插件安装.
-" 请将安装插的命令放在vundle#begin和vundle#end之间.
-" Github上的插件
-" 格式为 Plugin '用户名/插件仓库名'
-"Plugin 'tpope/vim-fugitive'
-" 来自 http://vim-scripts.org/vim/scripts.html 的插件
-" Plugin '插件名称' 实际上是 Plugin 'vim-scripts/插件仓库名' 只是此处的用户名可以省略
-"Plugin 'L9'
-" 由Git支持但不再github上的插件仓库 Plugin 'git clone 后面的地址'
-"Plugin 'git://git.wincent.com/command-t.git'
-" 本地的Git仓库(例如自己的插件) Plugin 'file:///+本地插件仓库绝对路径'
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" 插件在仓库的子目录中.
-" 正确指定路径用以设置runtimepath. 以下范例插件在sparkup/vim目录下
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" 避免插件名冲突,例如L9已存在,则可以指定
-"Plugin 'user/L9', {'name': 'newL9'}
-
-" 你的所有插件需要在下面这行之前
-call vundle#end()            " 必须
-filetype plugin indent on    " 必须 加载vim自带和插件相应的语法和文件类型相关脚本
-" 忽视插件改变缩进,可以使用以下替代:
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
-" 简要帮助文档
-" :PluginList       - 列出所有已配置的插件
-" :PluginInstall    - 安装插件,追加 `!` 用以更新或使用 :PluginUpdate
-" :PluginSearch foo - 搜索 foo ; 追加 `!` 清除本地缓存
-" :PluginClean      - 清除未使用插件,需要确认; 追加 `!` 自动批准移除未使用插件
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
-" 查阅 :h vundle 获取更多细节和wiki以及FAQ
-" 将你自己对非插件片段放在这行之后
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
-"===================================================================================================
 
-syntax enable                              "颜色显示
-set background=dark                        "背景
-colorscheme solarized                      "主题
-set number                                 "显示行号
-set ruler                                  "显示位置指示器
-set ignorecase                             "检索时忽略大小写
-set autoindent                             "自动缩进
-set smartindent                            "智能缩进
-set laststatus=2                           "始终显示状态栏
-set hls                                    "检索时高亮显示匹配项
-set tabstop=4                              "一个制表符的长度
-set softtabstop=4                          "一个制表符的长度（可以大于tabstop）
-set shiftwidth=4                           "一个缩进的长度
-set cursorline                             "高亮显示光标所在行
+"================其他设置==============="
 
-"NERDTree config
-"autocmd vimenter * NERDTree
+"vim设置
 
+syntax enable
+colorscheme solarized
+set background=dark
+set number
+set hls
+"显示当前行、列
+set cursorline  
+set cursorcolumn 
+
+set autoindent    " 自动缩进
+set modeline      " 底部的模式行
+
+" 设置缩进宽度为 4 个空格
+set shiftwidth=4 
+set tabstop=4
+set softtabstop=4
+
+"语法折叠
+set foldmethod=syntax
+set foldcolumn=0  " 设置折叠区域的宽度
+set foldlevel=100
+"用空格键来开关折叠
+nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+"以下文件类型，敲 {<回车> 后，自动加入反括号 }
+au FileType c,cpp,h,m,java,css,js,nginx,scala,go inoremap  <buffer>  {<CR>{<CR>}<Esc>O
+
+"开启文件类型侦测
+filetype on
+"根据侦测到的不同类型加载对应的插件
+filetype plugin on
+
+"插件设置
+
+set laststatus=2
 let g:airline_theme="luna" 
-"这个是安装字体后 必须设置此项" 
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#branch#enabled = 1
+
+" 在 vim 启动的时候默认开启 NERDTree（autocmd 可以缩写为 au）
+autocmd VimEnter * NERDTree
+
+" " 按下 F2 调出/隐藏 NERDTree
+" map  :silent! NERDTreeToggle
+
+" " 将 NERDTree 的窗口设置在 vim 窗口的右侧（默认为左侧）
+" let NERDTreeWinPos="right"
+
+" " 当打开 NERDTree 窗口时，自动显示 Bookmarks
+" let NERDTreeShowBookmarks=1
+
+"=========================================="
