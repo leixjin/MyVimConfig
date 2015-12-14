@@ -4,6 +4,6 @@ if brew list | grep coreutils > /dev/null ; then
   eval `gdircolors -b $HOME/.dir_colors`
 fi
 
-export PATH=/usr/local/bin:$PATH
 alias vi=vim
+export PATH=/usr/local/bin:$PATH
 export CLICOLOR=1
