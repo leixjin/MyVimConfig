@@ -6,4 +6,4 @@ fi
 
 alias vi=vim
 export PATH=/usr/local/bin:$PATH
-export CLICOLOR=1
+export CLICOLOR=256
